@@ -1,6 +1,7 @@
 #include "tileMapComponent.hpp"
 
 #include <SDL3/SDL.h>
+#include <stddef.h>
 
 #include <fstream>
 #include <sstream>
@@ -38,7 +39,7 @@ void TileMapComponent::update(float delta) {
 }
 
 void TileMapComponent::draw(SDL_Renderer* renderer) {
-	// If no texture return 
+	// If no texture return
 	if (mTexture == nullptr) {
 		return;
 	}
@@ -74,7 +75,8 @@ void TileMapComponent::draw(SDL_Renderer* renderer) {
 
 			if (dst.x < 0) {
 				dst.x += 1024;
-				SDL_RenderTexture(renderer, mTexture, &src, &dst);
+				SDL_RenderTexture(renderer, mTexture, &src,
+						  &dst);
 			}
 		}
 	}

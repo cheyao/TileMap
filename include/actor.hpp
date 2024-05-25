@@ -2,6 +2,7 @@
 #define ACTOR_H
 #pragma once
 
+#include <SDL3/SDL.h>
 #include <vector>
 
 #include "common.hpp"

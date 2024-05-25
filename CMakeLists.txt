@@ -8,6 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 #Options:
 option(SANITIZE "Build with sanitizer support if available" OFF)
 option(VENDOR "Vendor libraries" OFF)
+option(IWYU "Run include what you use" OFF)
 #CMAKE_BUILD_TYPE Release Debug
 
 set(SRC
@@ -154,6 +155,12 @@ else()
 		target_compile_options(${BUILD_NAME} PRIVATE -O3)
 		target_compile_definitions(${BUILD_NAME} PRIVATE -DNDEBUG)
 	endif()
+endif()
+
+# IWYU
+if(IWYU STREQUAL ON)
+	find_program(iwyu_path NAMES include-what-you-use iwyu REQUIRED)
+	set_property(TARGET ${BUILD_NAME} PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
 endif()
 
 #Sanitize

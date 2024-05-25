@@ -6,9 +6,6 @@
 
 #include <vector>
 
-#include "actor.hpp"
-#include "spriteComponent.hpp"
-
 class Game {
        public:
 	Game();
@@ -20,8 +17,8 @@ class Game {
 	void addActor(class Actor* actor);
 	void removeActor(class Actor* actor);
 
-	void addSprite(SpriteComponent* sprite);
-	void removeSprite(SpriteComponent* sprite);
+	void addSprite(class SpriteComponent* sprite);
+	void removeSprite(class SpriteComponent* sprite);
 
        private:
 	void input();

@@ -4,6 +4,8 @@
 #include <SDL3_image/SDL_image.h>
 
 #include <algorithm>
+#include <stddef.h>
+#include <string>
 
 #include "actor.hpp"
 #include "animSpriteComponent.hpp"

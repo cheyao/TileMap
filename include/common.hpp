@@ -30,15 +30,15 @@ namespace maths {
 	}
 
 	inline float arccos(float angle) {
-		return acos(angle);
+		return acosf(angle);
 	}
 
 	inline float arcsin(float angle) {
-		return asin(angle);
+		return asinf(angle);
 	}
 
 	inline float arctan(float angle) {
-		return atan(angle);
+		return atanf(angle);
 	}
 
 	inline float arctan2(float y, float x) {
@@ -46,7 +46,7 @@ namespace maths {
 	}
 
 	inline float sqrt(float number) {
-		return sqrt(number);
+		return sqrtf(number);
 	}
 
 	inline bool nearZero(float number, float epsilon = 0.001f) {

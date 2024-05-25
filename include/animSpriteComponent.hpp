@@ -2,6 +2,8 @@
 #define ANIMATED_SPRITE_COMPONENT_H
 #pragma once
 
+#include <SDL3/SDL.h>
+
 #include "spriteComponent.hpp"
 
 class AnimSpriteComponent : public SpriteComponent {
