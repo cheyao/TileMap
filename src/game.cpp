@@ -107,6 +107,11 @@ void Game::input() {
 }
 
 void Game::update() {
+	if (SDL_GetTicks() < mTicks + 16) {
+		return;
+		// Limit FPS
+	}
+
 	float delta = (SDL_GetTicks() - mTicks) / 1000.0f;
 	if (delta > 0.05) {
 		delta = 0.05;

@@ -1,6 +1,5 @@
 #include "spriteComponent.hpp"
 
-#include "SDL_render.h"
 #include "actor.hpp"
 #include "common.hpp"
 #include "component.hpp"

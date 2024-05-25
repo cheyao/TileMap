@@ -7,7 +7,7 @@
 
 // Warper functins just incase we change platforms
 namespace maths {
-	const float PI = M_PI;
+	const float PI = 3.14159265358979323846;
 
 	inline float toRadians(float degrees) {
 		return degrees * (PI / 180.f);
@@ -18,35 +18,35 @@ namespace maths {
 	}
 
 	inline float cos(float angle) {
-		return std::cosf(angle);
+		return cosf(angle);
 	}
 
 	inline float sin(float angle) {
-		return std::sinf(angle);
+		return sinf(angle);
 	}
 
 	inline float tan(float angle) {
-		return std::tanf(angle);
+		return tanf(angle);
 	}
 
 	inline float arccos(float angle) {
-		return std::acos(angle);
+		return acos(angle);
 	}
 
 	inline float arcsin(float angle) {
-		return std::asin(angle);
+		return asin(angle);
 	}
 
 	inline float arctan(float angle) {
-		return std::atan(angle);
+		return atan(angle);
 	}
 
 	inline float arctan2(float y, float x) {
-		return std::atan2(y, x); 
+		return atan2(y, x); 
 	}
 
 	inline float sqrt(float number) {
-		return std::sqrt(number);
+		return sqrt(number);
 	}
 
 	inline bool nearZero(float number, float epsilon = 0.001f) {
