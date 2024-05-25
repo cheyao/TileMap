@@ -2,9 +2,9 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
+#include <stddef.h>
 
 #include <algorithm>
-#include <stddef.h>
 #include <string>
 
 #include "actor.hpp"
@@ -46,6 +46,7 @@ int Game::init() {
 	    IMG_LoadTexture(mRenderer, "assets/Tiles.png");
 	if (tileMapTexture == nullptr) {
 		SDL_Log("Failed to load tilemap texture: %s", IMG_GetError());
+		delete background; // Potential memory leak
 		return 1;
 	}
 
@@ -70,7 +71,8 @@ int Game::init() {
 	tileMap3->setDictionary("assets/MapLayer3.csv");
 	tileMap3->setScrollSpeed(100);
 
-	SDL_Texture* headTexture = IMG_LoadTexture(mRenderer, "assets/Head.png");
+	SDL_Texture* headTexture =
+	    IMG_LoadTexture(mRenderer, "assets/Head.png");
 	if (headTexture == nullptr) {
 		SDL_Log("Failed to load head texture: %s", IMG_GetError());
 		return 1;
@@ -81,7 +83,8 @@ int Game::init() {
 	SpriteComponent* sprite = new SpriteComponent(head);
 	sprite->setTexture(headTexture);
 
-	SDL_Texture* animationTexture = IMG_LoadTexture(mRenderer, "assets/rocket.png");
+	SDL_Texture* animationTexture =
+	    IMG_LoadTexture(mRenderer, "assets/rocket.png");
 	if (animationTexture == nullptr) {
 		SDL_Log("Failed to load rocket: %s", IMG_GetError());
 		return 1;
@@ -89,7 +92,8 @@ int Game::init() {
 
 	Actor* animation = new Actor(this);
 	animation->setPosition(Vector2(512.f, 344.f));
-	AnimSpriteComponent* animatedSprite = new AnimSpriteComponent(animation);
+	AnimSpriteComponent* animatedSprite =
+	    new AnimSpriteComponent(animation);
 	animatedSprite->setFrames(5);
 	animatedSprite->setTexture(animationTexture);
 

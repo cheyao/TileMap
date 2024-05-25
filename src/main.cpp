@@ -18,7 +18,10 @@ int SDL_AppInit(void **appstate, int argc, char **argv) {
 	srand(time(nullptr));
 
 	Game *game = new Game();
-	game->init();
+	if (game->init()) {
+		// If failed to init
+		return 1;
+	}
 	*appstate = game;
 
 	return 0;
