@@ -124,16 +124,16 @@ class Vector2 {
 	}
 
 	void normalize() {
-		float length = this->length();
+		float vectorLength = this->length();
 		// Error catching
-		if (length == 0) {
+		if (vectorLength == 0) {
 			x = 0;
 			y = 0;
 
 			return;
 		}
-		x /= length;
-		y /= length;
+		x /= vectorLength;
+		y /= vectorLength;
 	}
 
 	static Vector2 normalize(const Vector2& vec) {

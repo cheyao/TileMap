@@ -13,7 +13,7 @@ class Game {
 
 	int init();
 	int iterate();
-	int event(SDL_Event event);
+	static int event(const SDL_Event& event);
 
 	void addActor(class Actor* actor);
 	void removeActor(class Actor* actor);
@@ -22,8 +22,9 @@ class Game {
 	void removeSprite(class SpriteComponent* sprite);
 
 	// No copy
-	Game(Game const &) = delete;
-	void operator=(Game const &x) = delete;
+	Game(Game const&) = delete;
+	void operator=(Game const& x) = delete;
+
        private:
 	void input();
 	void update();

@@ -8,13 +8,14 @@
 
 class AnimSpriteComponent : public SpriteComponent {
        public:
-	AnimSpriteComponent(class Actor* owner, int drawOrder = 100);
+	explicit AnimSpriteComponent(class Actor* owner, int drawOrder = 100);
 	void update(float delta) override;
 	void draw(SDL_Renderer* renderer) override;
 
-	float getFPS() { return mFPS; }
+	float getFPS() const { return mFPS; }
 	void setFPS(float fps) { mFPS = fps; }
-	int getFrames() { return mFrames; }
+
+	int getFrames() const { return mFrames; }
 	void setFrames(int frames) { mFrames = frames; }
 
        private:

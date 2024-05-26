@@ -9,8 +9,8 @@
 #include "actor.hpp"
 #include "spriteComponent.hpp"
 
-TileMapComponent::TileMapComponent(Actor* ownder, int drawOrder)
-    : SpriteComponent(ownder, drawOrder) {}
+TileMapComponent::TileMapComponent(Actor* owner, int drawOrder)
+    : SpriteComponent(owner, drawOrder), mScrollSpeed(0.f) {}
 
 void TileMapComponent::setDictionary(std::string dict) {
 	std::ifstream input(dict, std::ios::in);

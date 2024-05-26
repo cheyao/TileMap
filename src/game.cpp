@@ -1,10 +1,13 @@
 #include "game.hpp"
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_events.h>
+#include <SDL3/SDL_video.h>
 #include <SDL3_image/SDL_image.h>
 #include <stddef.h>
 
 #include <algorithm>
+#include <iterator>
 #include <string>
 
 #include "actor.hpp"
@@ -12,7 +15,7 @@
 #include "common.hpp"
 #include "tileMapComponent.hpp"
 
-Game::Game() : mUpdatingActors(false) {}
+Game::Game() : mWindow(nullptr), mRenderer(nullptr), mUpdatingActors(false) {}
 
 int Game::init() {
 	if (SDL_Init(SDL_INIT_VIDEO)) {
@@ -25,7 +28,8 @@ int Game::init() {
 		return 1;
 	}
 
-	mWindow = SDL_CreateWindow("TileMap", 1024, 768, 0);
+	// Create window and Renderer
+	mWindow = SDL_CreateWindow("TileMap", 1024, 768, SDL_WINDOW_RESIZABLE);
 	if (mWindow == nullptr) {
 		SDL_Log("Failed to create window: %s\n", SDL_GetError());
 		return 1;
@@ -37,6 +41,11 @@ int Game::init() {
 		return 1;
 	}
 
+	// Make sure that the widnow can be resized
+	SDL_SetRenderLogicalPresentation(mRenderer, 1024, 768,
+					 SDL_LOGICAL_PRESENTATION_STRETCH,
+					 SDL_SCALEMODE_NEAREST);
+
 	mTicks = SDL_GetTicks();
 
 	Actor* background = new Actor(this);
@@ -46,7 +55,7 @@ int Game::init() {
 	    IMG_LoadTexture(mRenderer, "assets/Tiles.png");
 	if (tileMapTexture == nullptr) {
 		SDL_Log("Failed to load tilemap texture: %s", IMG_GetError());
-		delete background; // Potential memory leak
+		delete background;  // Potential memory leak
 		return 1;
 	}
 
@@ -113,35 +122,33 @@ void Game::input() {
 }
 
 void Game::update() {
-	if (SDL_GetTicks() < mTicks + 16) {
-		return;
-		// Limit FPS
-	}
-
+	// Update the game
 	float delta = (SDL_GetTicks() - mTicks) / 1000.0f;
 	if (delta > 0.05) {
 		delta = 0.05;
 	}
 	mTicks = SDL_GetTicks();
 
+	// Update the Actors
 	mUpdatingActors = true;
 	for (auto actor : mActors) {
 		actor->update(delta);
 	}
 	mUpdatingActors = false;
 
-	for (auto actor : mPendingActors) {
-		mActors.emplace_back(actor);
-	}
+	// Append the pending actors
+	std::copy(mPendingActors.begin(), mPendingActors.end(),
+		  std::back_inserter(mActors));
 	mPendingActors.clear();
 
+	// Remove the dead Actors
 	std::vector<Actor*> deadActors;
-	for (auto actor : mActors) {
-		if (actor->getScale() == Actor::STATE_DEAD) {
-			deadActors.emplace_back(actor);
-		}
-	}
+	std::copy_if(mActors.begin(), mActors.end(),
+		     std::back_inserter(deadActors), [](const Actor* actor) {
+			     return (actor->getState() == Actor::STATE_DEAD);
+		     });
 
+	// Delete all the dead actors
 	for (auto actor : deadActors) {
 		delete actor;
 	}
@@ -167,7 +174,7 @@ int Game::iterate() {
 	return 0;
 }
 
-int Game::event(SDL_Event event) {
+int Game::event(const SDL_Event& event) {
 	switch (event.type) {
 		case SDL_EVENT_QUIT:
 			return 1;

@@ -11,7 +11,7 @@
 
 class TileMapComponent : public SpriteComponent {
        public:
-	TileMapComponent(class Actor* owner, int drawOrder = 10);
+	explicit TileMapComponent(class Actor* owner, int drawOrder = 10);
 
 	void setScreenSize(Vector2 size) { mScreenSize = size; }
 	void setScrollSpeed(float speed) { mScrollSpeed = speed; }

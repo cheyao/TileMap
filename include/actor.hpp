@@ -11,7 +11,7 @@ class Actor {
        public:
 	enum State { STATE_ALIVE, STATE_PAUSED, STATE_DEAD };
 
-	Actor(class Game* game);
+	explicit Actor(class Game* game);
 	virtual ~Actor();
 
 	void update(float delta);
@@ -25,12 +25,14 @@ class Actor {
 
 	const Vector2& getPosition() const { return mPosition; }
 	void setPosition(const Vector2& pos) { mPosition = pos; }
+
 	float getScale() const { return mScale; }
 	void setScale(float scale) { mScale = scale; }
-	float getRotation() { return mRotation; }
+
+	float getRotation() const { return mRotation; }
 	void setRotation(float rotation) { mRotation = rotation; }
 
-	State getState() { return mState; }
+	State getState() const { return mState; }
 	void setState(State state) { mState = state; }
 
 	void addComponent(class Component* component);
