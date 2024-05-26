@@ -1,5 +1,5 @@
-#ifndef COMPONENT_H
-#define COMPONENT_H
+#ifndef COMPONENT_HPP
+#define COMPONENT_HPP
 #pragma once
 
 #include <SDL3/SDL.h>
@@ -21,4 +21,4 @@ class Component {
 	int mUpdateOrder;
 };
 
-#endif	// COMPONENT_H
+#endif	// COMPONENT_HPP

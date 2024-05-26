@@ -1,5 +1,5 @@
-#ifndef TILE_MAP_COMPONENT_H
-#define TILE_MAP_COMPONENT_H
+#ifndef TILE_MAP_COMPONENT_HPP
+#define TILE_MAP_COMPONENT_HPP
 #pragma once
 
 #include "spriteComponent.hpp"
@@ -27,4 +27,4 @@ class TileMapComponent : public SpriteComponent {
 	float mScrollSpeed;
 };
 
-#endif	// TILE_MAP_COMPONENT_H
+#endif	// TILE_MAP_COMPONENT_HPP

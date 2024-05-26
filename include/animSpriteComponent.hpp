@@ -1,5 +1,5 @@
-#ifndef ANIMATED_SPRITE_COMPONENT_H
-#define ANIMATED_SPRITE_COMPONENT_H
+#ifndef ANIMATED_SPRITE_COMPONENT_HPP
+#define ANIMATED_SPRITE_COMPONENT_HPP
 #pragma once
 
 #include <SDL3/SDL.h>
@@ -24,4 +24,4 @@ class AnimSpriteComponent : public SpriteComponent {
 	float mCurrentFrame;
 };
 
-#endif	// ANIMATED_SPRITE_COMPONENT_H
+#endif	// ANIMATED_SPRITE_COMPONENT_HPP

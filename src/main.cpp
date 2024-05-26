@@ -18,7 +18,7 @@ int SDL_AppInit(void **appstate, int argc, char **argv) {
 	srand(time(nullptr));
 
 	Game *game = new Game();
-	if (game->init()) {
+	if (game->init() != 0) {
 		// If failed to init
 		return 1;
 	}
@@ -28,14 +28,14 @@ int SDL_AppInit(void **appstate, int argc, char **argv) {
 }
 
 int SDL_AppEvent(void *appstate, const SDL_Event *event) {
-	return ((Game *)appstate)->event(*event);
+	return static_cast<Game *>(appstate)->event(*event);
 }
 
 int SDL_AppIterate(void *appstate) { 
-	return ((Game *)appstate)->iterate(); 
+	return static_cast<Game *>(appstate)->iterate(); 
 }
 
 void SDL_AppQuit(void *appstate) {
-	delete ((Game *)appstate);
+	delete static_cast<Game *>(appstate);
 }
 

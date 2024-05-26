@@ -1,5 +1,5 @@
-#ifndef COMMON_H
-#define COMMON_H
+#ifndef COMMON_HPP
+#define COMMON_HPP
 #pragma once
 
 #include <cmath>
@@ -147,4 +147,4 @@ class Vector2 {
 	}
 };
 
-#endif	// COMMON_H
+#endif	// COMMON_HPP

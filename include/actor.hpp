@@ -1,5 +1,5 @@
-#ifndef ACTOR_H
-#define ACTOR_H
+#ifndef ACTOR_HPP
+#define ACTOR_HPP
 #pragma once
 
 #include <SDL3/SDL.h>
@@ -47,4 +47,4 @@ class Actor {
 	class Game* mGame;
 };
 
-#endif	// ACTOR_H
+#endif	// ACTOR_HPP

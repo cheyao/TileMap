@@ -1,5 +1,5 @@
-#ifndef SPRITE_COMPONENT_H
-#define SPRITE_COMPONENT_H
+#ifndef SPRITE_COMPONENT_HPP
+#define SPRITE_COMPONENT_HPP
 #pragma once
 
 #include <SDL3/SDL.h>
@@ -26,4 +26,4 @@ class SpriteComponent : public Component {
 	int mTextureHeight;
 };
 
-#endif	// sprite_COMPONENT_H
+#endif	// sprite_COMPONENT_HPP

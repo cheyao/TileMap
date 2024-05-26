@@ -6,9 +6,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 #Options:
-option(SANITIZE "Build with sanitizer support if available" OFF)
-option(VENDOR "Vendor libraries" OFF)
-option(IWYU "Run include what you use" OFF)
+option(SANITIZE 	"Build with sanitizer support if available" OFF)
+option(VENDOR 		"Vendor libraries" OFF)
+option(IWYU 		"Run include what you use" OFF)
+option(CLANG_TIDY 	"Run clang tidy" OFF)
+option(CLANG_FORMAT 	"Run clang format" OFF)
 #CMAKE_BUILD_TYPE Release Debug
 
 set(SRC
@@ -50,6 +52,7 @@ endif()
 if(CMAKE_BUILD_TYPE STREQUAL Debug)
 	message("Debug enabled")
 	set(DEBUG TRUE)
+	set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 endif()
 
 #Check platform
@@ -159,8 +162,17 @@ endif()
 
 # IWYU
 if(IWYU STREQUAL ON)
+	message("Running IWYU")
 	find_program(iwyu_path NAMES include-what-you-use iwyu REQUIRED)
 	set_property(TARGET ${BUILD_NAME} PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
+endif()
+
+if(CLANG_TIDY STREQUAL ON)
+	message("Running cmake tidy")
+	find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
+	set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+	set(CLANG_TIDY_COMMAND "${CLANG_TIDY_EXE}" "--config-file=${CMAKE_SOURCE_DIR}/.clang-tidy;--use-color")
+	set_target_properties(${BUILD_NAME} PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
 endif()
 
 #Sanitize

@@ -1,5 +1,5 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef GAME_HPP
+#define GAME_HPP
 #pragma once
 
 #include <SDL3/SDL.h>
@@ -10,6 +10,7 @@ class Game {
        public:
 	Game();
 	~Game();
+
 	int init();
 	int iterate();
 	int event(SDL_Event event);
@@ -20,6 +21,9 @@ class Game {
 	void addSprite(class SpriteComponent* sprite);
 	void removeSprite(class SpriteComponent* sprite);
 
+	// No copy
+	Game(Game const &) = delete;
+	void operator=(Game const &x) = delete;
        private:
 	void input();
 	void update();
@@ -37,4 +41,4 @@ class Game {
 	bool mUpdatingActors;
 };
 
-#endif	// GAME_H
+#endif	// GAME_HPP
