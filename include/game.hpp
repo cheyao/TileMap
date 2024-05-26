@@ -40,6 +40,10 @@ class Game {
 	Uint64 mTicks;
 
 	bool mUpdatingActors;
+
+#ifdef __EMSCRIPTEN__
+	int mWidth, mHeight;
+#endif
 };
 
 #endif	// GAME_HPP

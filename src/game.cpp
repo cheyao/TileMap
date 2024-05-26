@@ -10,6 +10,18 @@
 #include <iterator>
 #include <string>
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten/html5.h>
+
+EM_JS(int, browserHeight, (), {
+	return window.innerHeight;
+});
+
+EM_JS(int, browserWidth, (), {
+	return window.innerWidth;
+});
+#endif
+
 #include "actor.hpp"
 #include "animSpriteComponent.hpp"
 #include "common.hpp"
@@ -29,7 +41,15 @@ int Game::init() {
 	}
 
 	// Create window and Renderer
+#ifdef __EMSCRIPTEN__
+	// Hacks for EMSCRIPTEN Full screen
+	mWidth = browserWidth();
+	mHeight = browserHeight();
+
+	mWindow = SDL_CreateWindow("TileMap", mWidth, mHeight, SDL_WINDOW_RESIZABLE);
+#else
 	mWindow = SDL_CreateWindow("TileMap", 1024, 768, SDL_WINDOW_RESIZABLE);
+#endif
 	if (mWindow == nullptr) {
 		SDL_Log("Failed to create window: %s\n", SDL_GetError());
 		return 1;
@@ -122,6 +142,16 @@ void Game::input() {
 }
 
 void Game::update() {
+	// Hack for web window resizing
+#ifdef __EMSCRIPTEN__
+	if (browserWidth() != mWidth || browserHeight() != mHeight) {
+		mWidth = browserWidth();
+		mHeight = browserHeight();
+
+		SDL_SetWindowSize(mWindow, mWidth, mHeight);
+	}
+#endif
+
 	// Update the game
 	float delta = (SDL_GetTicks() - mTicks) / 1000.0f;
 	if (delta > 0.05) {

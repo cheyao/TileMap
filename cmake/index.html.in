@@ -10,11 +10,10 @@
   padding: none;
 }
 
-.emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
+.emscripten { padding-right: 0; display: block; }
 div.emscripten { text-align: center; }
-div.emscripten_border { border: 1px solid black; }
 /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
-canvas.emscripten { border: 0px none; background-color: black; }
+canvas.emscripten { border: 0px none; background-color: white; }
 
 .spinner {
   height: 30px;
@@ -69,36 +68,16 @@ canvas.emscripten { border: 0px none; background-color: black; }
   height: 20px;
   width: 300px;
 }
-
-#controls {
-  display: inline-block;
-  float: right;
-  vertical-align: top;
-  margin-top: 30px;
-  margin-right: 20px;
-}
 </style>
   </head>
   <body>
-    <div class="spinner" id='spinner'></div>
-    <div class="emscripten" id="status">Downloading...</div>
-
-    <span id='controls'>
-      <span><input type="checkbox" id="resize">Resize canvas</span>
-      <span><input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer &nbsp;&nbsp;&nbsp;</span>
-      <span><input type="button" value="Fullscreen" onclick="Module.requestFullscreen(document.getElementById('pointerLock').checked, 
-                                                                                document.getElementById('resize').checked)">
-      </span>
-    </span>
-
-    <div class="emscripten">
-      <progress value="0" max="100" id="progress" hidden=1></progress>
+    <div class="emscripten" style="width: 100%; display: flex; justify-content: center;">
+        <div class="spinner" id='spinner'></div>
+        <div class="emscripten" id="status">Downloading...</div>
+        <progress value="0" max="100" id="progress" hidden=0></progress>
     </div>
 
-    <div class="emscripten_border">
-      <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
-    </div>
-    <textarea id="output" rows="8"></textarea>
+    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
 
     <script type='text/javascript'>
       var statusElement = document.getElementById('status');
@@ -146,7 +125,9 @@ canvas.emscripten { border: 0px none; background-color: black; }
             progressElement.value = null;
             progressElement.max = null;
             progressElement.hidden = true;
+            if (!text) progressElement.style.display = 'none';
             if (!text) spinnerElement.style.display = 'none';
+            if (!text) statusElement.style.display = 'none';
           }
           statusElement.innerHTML = text;
         },
