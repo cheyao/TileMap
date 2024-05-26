@@ -27,7 +27,12 @@ EM_JS(int, browserWidth, (), {
 #include "common.hpp"
 #include "tileMapComponent.hpp"
 
-Game::Game() : mWindow(nullptr), mRenderer(nullptr), mUpdatingActors(false) {}
+Game::Game() : mWindow(nullptr), mRenderer(nullptr), mUpdatingActors(false) 
+#ifdef __EMSCRIPTEN__
+	       , mWidth(1024)
+	       , mHeight(768)
+#endif
+{}
 
 int Game::init() {
 	if (SDL_Init(SDL_INIT_VIDEO)) {

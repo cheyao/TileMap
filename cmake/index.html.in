@@ -13,7 +13,7 @@
 .emscripten { padding-right: 0; display: block; }
 div.emscripten { text-align: center; }
 /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
-canvas.emscripten { border: 0px none; background-color: white; }
+canvas.emscripten { border: 0px none; }
 
 .spinner {
   height: 30px;
