@@ -43,7 +43,7 @@ int Game::init() {
 
 	// Make sure that the widnow can be resized
 	SDL_SetRenderLogicalPresentation(mRenderer, 1024, 768,
-					 SDL_LOGICAL_PRESENTATION_STRETCH,
+					 SDL_LOGICAL_PRESENTATION_LETTERBOX,
 					 SDL_SCALEMODE_NEAREST);
 
 	mTicks = SDL_GetTicks();
