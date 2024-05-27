@@ -171,8 +171,9 @@ endif()
 # IWYU
 if(IWYU STREQUAL ON)
 	message("Running IWYU")
-	find_program(iwyu_path NAMES include-what-you-use iwyu REQUIRED)
-	set_target_properties(${BUILD_NAME} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
+	find_program(IWYU_EXE NAMES include-what-you-use iwyu REQUIRED)
+	set(IWYU_COMMAND "${IWYU_EXE}" "-Xiwyu" "--mapping_file=${CMAKE_SOURCE_DIR}/.iwyu.imp")
+	set_target_properties(${BUILD_NAME} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE "${IWYU_COMMAND}")
 endif()
 
 if(CLANG_TIDY STREQUAL ON)

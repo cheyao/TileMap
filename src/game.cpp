@@ -1,8 +1,6 @@
 #include "game.hpp"
 
 #include <SDL3/SDL.h>
-#include <SDL3/SDL_events.h>
-#include <SDL3/SDL_video.h>
 #include <SDL3_image/SDL_image.h>
 #include <stddef.h>
 
@@ -13,26 +11,28 @@
 #ifdef __EMSCRIPTEN__
 #include <emscripten/html5.h>
 
-EM_JS(int, browserHeight, (), {
-	return window.innerHeight;
-});
+EM_JS(int, browserHeight, (), { return window.innerHeight; });
 
-EM_JS(int, browserWidth, (), {
-	return window.innerWidth;
-});
+EM_JS(int, browserWidth, (), { return window.innerWidth; });
 #endif
 
 #include "actor.hpp"
 #include "animSpriteComponent.hpp"
 #include "common.hpp"
+#include "spriteComponent.hpp"
 #include "tileMapComponent.hpp"
 
-Game::Game() : mWindow(nullptr), mRenderer(nullptr), mUpdatingActors(false) 
+Game::Game()
+    : mWindow(nullptr),
+      mRenderer(nullptr),
+      mUpdatingActors(false)
 #ifdef __EMSCRIPTEN__
-	       , mWidth(1024)
-	       , mHeight(768)
+      ,
+      mWidth(1024),
+      mHeight(768)
 #endif
-{}
+{
+}
 
 int Game::init() {
 	if (SDL_Init(SDL_INIT_VIDEO)) {
@@ -51,7 +51,8 @@ int Game::init() {
 	mWidth = browserWidth();
 	mHeight = browserHeight();
 
-	mWindow = SDL_CreateWindow("TileMap", mWidth, mHeight, SDL_WINDOW_RESIZABLE);
+	mWindow =
+	    SDL_CreateWindow("TileMap", mWidth, mHeight, SDL_WINDOW_RESIZABLE);
 #else
 	mWindow = SDL_CreateWindow("TileMap", 1024, 768, SDL_WINDOW_RESIZABLE);
 #endif
