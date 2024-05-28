@@ -1,7 +1,6 @@
 # Tile Map
 
-Just testing how tile maps work
-And animations
+A template SDL3 cross-platform project
 
 ## Dependencies:
 SDL3
@@ -16,6 +15,11 @@ mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
 ```
+To make release on mac:
+```
+./mac-patch-dylib.sh
+```
+This will patch the binary to include SDL in the bundle
 
 ## Web 
 
@@ -28,7 +32,7 @@ emmake make
 ```
 When building there should be errors saying for example that you need png library, so go to the `external` folder of `SDL_image`, run `./download.sh` and go to the directories of the missing libraryies and build with cmake & emscripten.
 
-# Linux 32 bit
+## Linux 32 bit
 ```
 export CFLAGS="-m32"
 export CXXFLAGS="-m32"
@@ -38,7 +42,7 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
 ```
 
-# For windows on linux
+## For windows on linux
 ```
 mkdir build && cd build
 x86_64-w64-mingw32-cmake -DCMAKE_BUILD_TYPE=Release ..
@@ -47,7 +51,7 @@ cmake --build .
 
 See https://cheyao.github.io/cross-compile-windows.html
 
-# Emscriptien 
+## Emscriptien 
 ```
 mkdir build && cd build
 source ~/emsdk/emsdk_env.sh

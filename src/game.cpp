@@ -79,7 +79,7 @@ int Game::init() {
 	background->setPosition(Vector2(0.f, 0.f));
 
 	SDL_Texture* tileMapTexture =
-	    IMG_LoadTexture(mRenderer, "assets/Tiles.png");
+	    IMG_LoadTexture(mRenderer, (static_cast<std::string>(SDL_GetBasePath()) + "assets/Tiles.png").c_str());
 	if (tileMapTexture == nullptr) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load tilemap texture: %s", IMG_GetError());
 		delete background;  // Potential memory leak
@@ -108,7 +108,7 @@ int Game::init() {
 	tileMap3->setScrollSpeed(100);
 
 	SDL_Texture* headTexture =
-	    IMG_LoadTexture(mRenderer, "assets/Head.png");
+	    IMG_LoadTexture(mRenderer, (static_cast<std::string>(SDL_GetBasePath()) + "assets/Head.png").c_str());
 	if (headTexture == nullptr) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load head texture: %s", IMG_GetError());
 		return 1;
@@ -120,7 +120,7 @@ int Game::init() {
 	sprite->setTexture(headTexture);
 
 	SDL_Texture* animationTexture =
-	    IMG_LoadTexture(mRenderer, "assets/rocket.png");
+	    IMG_LoadTexture(mRenderer, (static_cast<std::string>(SDL_GetBasePath()) + "assets/rocket.png").c_str());
 	if (animationTexture == nullptr) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load rocket: %s", IMG_GetError());
 		return 1;
