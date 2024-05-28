@@ -103,7 +103,9 @@ if(NOT ANDROID)
 		add_subdirectory(external/SDL3_image EXCLUDE_FROM_ALL)
 	else()
     		find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-shared)
-		find_package(SDL3_image REQUIRED CONFIG REQUIRED COMPONENTS SDL3_image-shared)
+		if(MACOSX AND NOT DEBUG)
+			find_package(SDL3_image REQUIRED CONFIG REQUIRED COMPONENTS SDL3_image-static)
+		endif()
 	endif()
 endif()
 
@@ -134,6 +136,8 @@ elseif(MACOSX)
 		    MACOSX_BUNDLE_SHORT_VERSION_STRING "0.1"
 		    MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/cmake/info.plist.in
 		)
+	
+	file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/${BUILD_NAME}.app/Contents/Resources)
 	endif()
 	target_link_libraries(${BUILD_NAME} PRIVATE SDL3::SDL3 SDL3_image::SDL3_image)
 elseif(WINDOWS)

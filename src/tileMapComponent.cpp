@@ -13,7 +13,7 @@ TileMapComponent::TileMapComponent(Actor* owner, int drawOrder)
     : SpriteComponent(owner, drawOrder), mScrollSpeed(0.f) {}
 
 void TileMapComponent::setDictionary(std::string dict) {
-	std::ifstream input(dict, std::ios::in);
+	std::ifstream input(SDL_GetBasePath() + dict, std::ios::in);
 
 	std::string line;
 	while (std::getline(input, line)) {

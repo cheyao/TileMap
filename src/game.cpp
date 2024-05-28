@@ -2,6 +2,7 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
+#include <cstdio>
 #include <stddef.h>
 
 #include <algorithm>
@@ -36,12 +37,12 @@ Game::Game()
 
 int Game::init() {
 	if (SDL_Init(SDL_INIT_VIDEO)) {
-		SDL_Log("Failed to init SDL: %s\n", SDL_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to init SDL: %s\n", SDL_GetError());
 		return 1;
 	}
 
 	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
-		SDL_Log("Failed to init SDL_image: %s\n", SDL_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to init SDL_image: %s\n", SDL_GetError());
 		return 1;
 	}
 
@@ -57,13 +58,13 @@ int Game::init() {
 	mWindow = SDL_CreateWindow("TileMap", 1024, 768, SDL_WINDOW_RESIZABLE);
 #endif
 	if (mWindow == nullptr) {
-		SDL_Log("Failed to create window: %s\n", SDL_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to create window: %s\n", SDL_GetError());
 		return 1;
 	}
 
 	mRenderer = SDL_CreateRenderer(mWindow, NULL);
 	if (mRenderer == nullptr) {
-		SDL_Log("Failed to create renderer: %s", SDL_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to create renderer: %s", SDL_GetError());
 		return 1;
 	}
 
@@ -80,7 +81,7 @@ int Game::init() {
 	SDL_Texture* tileMapTexture =
 	    IMG_LoadTexture(mRenderer, "assets/Tiles.png");
 	if (tileMapTexture == nullptr) {
-		SDL_Log("Failed to load tilemap texture: %s", IMG_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load tilemap texture: %s", IMG_GetError());
 		delete background;  // Potential memory leak
 		return 1;
 	}
@@ -109,7 +110,7 @@ int Game::init() {
 	SDL_Texture* headTexture =
 	    IMG_LoadTexture(mRenderer, "assets/Head.png");
 	if (headTexture == nullptr) {
-		SDL_Log("Failed to load head texture: %s", IMG_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load head texture: %s", IMG_GetError());
 		return 1;
 	}
 
@@ -121,7 +122,7 @@ int Game::init() {
 	SDL_Texture* animationTexture =
 	    IMG_LoadTexture(mRenderer, "assets/rocket.png");
 	if (animationTexture == nullptr) {
-		SDL_Log("Failed to load rocket: %s", IMG_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load rocket: %s", IMG_GetError());
 		return 1;
 	}
 
