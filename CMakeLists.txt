@@ -103,8 +103,10 @@ if(NOT ANDROID)
 		add_subdirectory(external/SDL3_image EXCLUDE_FROM_ALL)
 	else()
     		find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-shared)
+		find_package(SDL3_image REQUIRED CONFIG REQUIRED COMPONENTS SDL3_image-shared)
+
 		if(MACOSX AND NOT DEBUG)
-			find_package(SDL3_image REQUIRED CONFIG REQUIRED COMPONENTS SDL3_image-static)
+			message("Building for MacOS, did you use -DCMAKE_OSX_ARCHITECTURES=arm64;x86_64?")
 		endif()
 	endif()
 endif()
@@ -125,7 +127,7 @@ elseif(MACOSX)
 	if(DEBUG)
 		add_executable(${BUILD_NAME} ${SRC})
 	else()
-#Package into a application bundle
+		#Package into a application bundle
 		add_executable(${BUILD_NAME} MACOSX_BUNDLE ${SRC})            
 		set_target_properties(${BUILD_NAME} PROPERTIES
 		    BUNDLE True
@@ -137,8 +139,11 @@ elseif(MACOSX)
 		    MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/cmake/info.plist.in
 		)
 	
-	file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/${BUILD_NAME}.app/Contents/Resources)
+		file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/${BUILD_NAME}.app/Contents/Resources)
+
+		add_link_options(-headerpad_max_install_names)
 	endif()
+
 	target_link_libraries(${BUILD_NAME} PRIVATE SDL3::SDL3 SDL3_image::SDL3_image)
 elseif(WINDOWS)
 	message("Building for windows")
