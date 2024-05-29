@@ -2,7 +2,7 @@
 
 A template SDL3 cross-platform project
 
-You can find compiled binaries and a play-on-web version here: https://cheyao.itch.io/test-sdl3 The password is `cheyao` (Couldn't find link share option XD)
+You can find compiled binaries and a play-on-web version here: https://cheyao.itch.io/test-sdl3 
 
 ## Dependencies:
 SDL3
