@@ -2,6 +2,8 @@
 
 A template SDL3 cross-platform project
 
+You can find compiled binaries and a play-on-web version here: https://cheyao.itch.io/test-sdl3 The password is `cheyao` (Couldn't find link share option XD)
+
 ## Dependencies:
 SDL3
 SDL3_image
@@ -60,3 +62,12 @@ emmake
 ```
 
 See https://cheyao.github.io/cross-compile-web.html
+
+## Android 
+```
+git submodule update --init --recursive
+cd android
+./gradlew build
+```
+
+You will find an unsigned apk in `app/build/outputs/apk/release/`

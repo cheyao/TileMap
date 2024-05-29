@@ -2,7 +2,6 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
-#include <cstdio>
 #include <stddef.h>
 
 #include <algorithm>
@@ -37,12 +36,14 @@ Game::Game()
 
 int Game::init() {
 	if (SDL_Init(SDL_INIT_VIDEO)) {
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to init SDL: %s\n", SDL_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+			     "Failed to init SDL: %s\n", SDL_GetError());
 		return 1;
 	}
 
 	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to init SDL_image: %s\n", SDL_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+			     "Failed to init SDL_image: %s\n", SDL_GetError());
 		return 1;
 	}
 
@@ -58,13 +59,15 @@ int Game::init() {
 	mWindow = SDL_CreateWindow("TileMap", 1024, 768, SDL_WINDOW_RESIZABLE);
 #endif
 	if (mWindow == nullptr) {
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to create window: %s\n", SDL_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+			     "Failed to create window: %s\n", SDL_GetError());
 		return 1;
 	}
 
 	mRenderer = SDL_CreateRenderer(mWindow, NULL);
 	if (mRenderer == nullptr) {
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to create renderer: %s", SDL_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+			     "Failed to create renderer: %s", SDL_GetError());
 		return 1;
 	}
 
@@ -78,10 +81,21 @@ int Game::init() {
 	Actor* background = new Actor(this);
 	background->setPosition(Vector2(0.f, 0.f));
 
+	char* basepath = SDL_GetBasePath();
+	std::string base;
+	if (basepath == NULL) {
+		base = "";
+	} else {
+		base = static_cast<std::string>(basepath); 
+		SDL_free(basepath); // We gotta free da pointer UwU
+	}
+
 	SDL_Texture* tileMapTexture =
-	    IMG_LoadTexture(mRenderer, (static_cast<std::string>(SDL_GetBasePath()) + "assets/Tiles.png").c_str());
+	    IMG_LoadTexture(mRenderer, (base + "assets/Tiles.png").c_str());
 	if (tileMapTexture == nullptr) {
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load tilemap texture: %s", IMG_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+			     "Failed to load tilemap texture: %s",
+			     IMG_GetError());
 		delete background;  // Potential memory leak
 		return 1;
 	}
@@ -107,10 +121,13 @@ int Game::init() {
 	tileMap3->setDictionary("assets/MapLayer3.csv");
 	tileMap3->setScrollSpeed(100);
 
-	SDL_Texture* headTexture =
-	    IMG_LoadTexture(mRenderer, (static_cast<std::string>(SDL_GetBasePath()) + "assets/Head.png").c_str());
+	SDL_Texture* headTexture = IMG_LoadTexture(
+	    mRenderer,
+	    (base + "assets/Head.png")
+		.c_str());
 	if (headTexture == nullptr) {
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load head texture: %s", IMG_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+			     "Failed to load head texture: %s", IMG_GetError());
 		return 1;
 	}
 
@@ -119,10 +136,13 @@ int Game::init() {
 	SpriteComponent* sprite = new SpriteComponent(head);
 	sprite->setTexture(headTexture);
 
-	SDL_Texture* animationTexture =
-	    IMG_LoadTexture(mRenderer, (static_cast<std::string>(SDL_GetBasePath()) + "assets/rocket.png").c_str());
+	SDL_Texture* animationTexture = IMG_LoadTexture(
+	    mRenderer,
+	    (base + "assets/rocket.png")
+		.c_str());
 	if (animationTexture == nullptr) {
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load rocket: %s", IMG_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+			     "Failed to load rocket: %s", IMG_GetError());
 		return 1;
 	}
 

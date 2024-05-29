@@ -3,8 +3,8 @@
 #include <SDL3/SDL.h>
 #include <stddef.h>
 
-#include <fstream>
-#include <sstream>
+#include <cctype>
+#include <string>
 
 #include "actor.hpp"
 #include "spriteComponent.hpp"
@@ -12,19 +12,56 @@
 TileMapComponent::TileMapComponent(Actor* owner, int drawOrder)
     : SpriteComponent(owner, drawOrder), mScrollSpeed(0.f) {}
 
-void TileMapComponent::setDictionary(std::string dict) {
-	std::ifstream input(SDL_GetBasePath() + dict, std::ios::in);
-
-	std::string line;
-	while (std::getline(input, line)) {
-		std::stringstream lineStream(line);
-		std::string cell;
-		std::vector<int> phrasedRow;
-		while (std::getline(lineStream, cell, ',')) {
-			phrasedRow.push_back(std::stoi(cell));
-		}
-		mDictionary.push_back(phrasedRow);
+void TileMapComponent::setDictionary(const char* dict) {
+	char* basepath = SDL_GetBasePath();
+	std::string base;
+	if (basepath == NULL) {
+		base = "";
+	} else {
+		base = static_cast<std::string>(basepath);
+		SDL_free(basepath);
 	}
+
+	SDL_IOStream* input = SDL_IOFromFile(
+	    (base + dict).c_str(), "r");
+
+	// C in C++ lol #BlameSDL
+	mDictionary.push_back(std::vector<int>());
+	char c;
+	int i = 0;
+	int sign = 1;
+	while (SDL_ReadIO(input, &c, 1)) {
+		if (c == '-') {
+			sign = -1;
+		}
+
+		if (std::isdigit(c)) {
+			i *= 10;
+			i += c - '0';
+			continue;
+		}
+
+		if (c == ',') {
+			mDictionary[mDictionary.size() - 1].push_back(i * sign);
+			i = 0;
+			sign = 1;
+			continue;
+		}
+
+		if (c == '\n') {
+			mDictionary[mDictionary.size() - 1].push_back(i * sign);
+			mDictionary.push_back(std::vector<int>());
+			i = 0;
+			sign = 1;
+			continue;
+		}
+	}
+
+	if (mDictionary[mDictionary.size() - 1].empty()) {
+		mDictionary.pop_back();
+	}
+
+	SDL_CloseIO(input);
 }
 
 void TileMapComponent::update(float delta) {

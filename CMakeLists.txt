@@ -116,9 +116,9 @@ endif()
 if (ANDROID)
 	message("Building for Android")
 
-	add_library(${BUILD_NAME} SHARED)
+	add_library(${BUILD_NAME} SHARED ${SRC})
 
-	target_sources(${BUILD_NAME} PRIVATE ${SRC})
+	# target_sources(${BUILD_NAME} PRIVATE ${SRC})
 
 	target_link_libraries(${BUILD_NAME} PUBLIC SDL3::SDL3 SDL3_image::SDL3_image)
 elseif(MACOSX)

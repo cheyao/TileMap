@@ -2,12 +2,12 @@
 #define TILE_MAP_COMPONENT_HPP
 #pragma once
 
-#include "spriteComponent.hpp"
-#include "common.hpp"
-
 #include <SDL3/SDL.h>
+
 #include <vector>
-#include <string>
+
+#include "common.hpp"
+#include "spriteComponent.hpp"
 
 class TileMapComponent : public SpriteComponent {
        public:
@@ -15,7 +15,7 @@ class TileMapComponent : public SpriteComponent {
 
 	void setScreenSize(Vector2 size) { mScreenSize = size; }
 	void setScrollSpeed(float speed) { mScrollSpeed = speed; }
-	void setDictionary(std::string dict);
+	void setDictionary(const char* dict);
 
 	void update(float delta) override;
 	void draw(SDL_Renderer* renderer) override;
