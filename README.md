@@ -71,3 +71,6 @@ cd android
 ```
 
 You will find an unsigned apk in `app/build/outputs/apk/release/`
+
+You can sign the app with `cmake/sign-apk.sh`, just edit it with your env variables
+
