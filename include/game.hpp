@@ -41,9 +41,7 @@ class Game {
 
 	bool mUpdatingActors;
 
-#ifdef __EMSCRIPTEN__
-	int mWidth, mHeight;
-#endif
+	int mWindowWidth, mWindowHeight;
 };
 
 #endif	// GAME_HPP

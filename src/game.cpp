@@ -25,14 +25,9 @@ EM_JS(int, browserWidth, (), { return window.innerWidth; });
 Game::Game()
     : mWindow(nullptr),
       mRenderer(nullptr),
-      mUpdatingActors(false)
-#ifdef __EMSCRIPTEN__
-      ,
-      mWidth(1024),
-      mHeight(768)
-#endif
-{
-}
+      mUpdatingActors(false),
+      mWindowWidth(1024),
+      mWindowHeight(768) {}
 
 int Game::init() {
 	if (SDL_Init(SDL_INIT_VIDEO)) {
@@ -50,11 +45,11 @@ int Game::init() {
 	// Create window and Renderer
 #ifdef __EMSCRIPTEN__
 	// Hacks for EMSCRIPTEN Full screen
-	mWidth = browserWidth();
-	mHeight = browserHeight();
+	mWindowWidth = browserWidth();
+	mWindowHeight = browserHeight();
 
-	mWindow =
-	    SDL_CreateWindow("TileMap", mWidth, mHeight, SDL_WINDOW_RESIZABLE);
+	mWindow = SDL_CreateWindow("TileMap", mWindowWidth, mWindowHeight,
+				   SDL_WINDOW_RESIZABLE);
 #else
 	mWindow = SDL_CreateWindow("TileMap", 1024, 768, SDL_WINDOW_RESIZABLE);
 #endif
@@ -86,8 +81,8 @@ int Game::init() {
 	if (basepath == NULL) {
 		base = "";
 	} else {
-		base = static_cast<std::string>(basepath); 
-		SDL_free(basepath); // We gotta free da pointer UwU
+		base = static_cast<std::string>(basepath);
+		SDL_free(basepath);  // We gotta free da pointer UwU
 	}
 
 	SDL_Texture* tileMapTexture =
@@ -121,10 +116,8 @@ int Game::init() {
 	tileMap3->setDictionary("assets/MapLayer3.csv");
 	tileMap3->setScrollSpeed(100);
 
-	SDL_Texture* headTexture = IMG_LoadTexture(
-	    mRenderer,
-	    (base + "assets/Head.png")
-		.c_str());
+	SDL_Texture* headTexture =
+	    IMG_LoadTexture(mRenderer, (base + "assets/Head.png").c_str());
 	if (headTexture == nullptr) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
 			     "Failed to load head texture: %s", IMG_GetError());
@@ -136,10 +129,8 @@ int Game::init() {
 	SpriteComponent* sprite = new SpriteComponent(head);
 	sprite->setTexture(headTexture);
 
-	SDL_Texture* animationTexture = IMG_LoadTexture(
-	    mRenderer,
-	    (base + "assets/rocket.png")
-		.c_str());
+	SDL_Texture* animationTexture =
+	    IMG_LoadTexture(mRenderer, (base + "assets/rocket.png").c_str());
 	if (animationTexture == nullptr) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
 			     "Failed to load rocket: %s", IMG_GetError());
@@ -171,11 +162,11 @@ void Game::input() {
 void Game::update() {
 	// Hack for web window resizing
 #ifdef __EMSCRIPTEN__
-	if (browserWidth() != mWidth || browserHeight() != mHeight) {
-		mWidth = browserWidth();
-		mHeight = browserHeight();
+	if (browserWidth() != mWidth || browserHeight() != mWindowHeight) {
+		mWindowWidth = browserWidth();
+		mWindowHeight = browserHeight();
 
-		SDL_SetWindowSize(mWindow, mWidth, mHeight);
+		SDL_SetWindowSize(mWindow, mWindowWidth, mWindowHeight);
 	}
 #endif
 
