@@ -1,10 +1,20 @@
 #!/bin/sh
-
-BUILD_TOOLS=/usr/bin/
+RED='\033[0;31m'
+NC='\033[0m'
 
 if [ -z "$1" ]; then
-        echo "usage: $0 your-app.apk"
-        exit 1
+	echo -e "${RED}Usage: $0 your-app.apk$NC"
+	exit 1
+fi
+
+if ! type "zipalign" > /dev/null; then
+	echo -e "${RED}Please install zipalign$NC"
+	exit 1
+fi
+
+if ! type "apksigner" > /dev/null; then
+	echo -e "${RED}Please install apksignerm$NC"
+	exit 1
 fi
 
 DIR=`mktemp -d`
@@ -13,6 +23,7 @@ BN=`basename "$1"`
 OUT="$DN/repacked-$BN"
 OUT_ALIGNED="$DN/aligned-$BN"
 OUT_SIGNED="$DN/signed-$BN"
+KEYFILE=~/Developer/cheyao-android-key.keystore
 
 # Debug mode
 set -x
@@ -32,16 +43,18 @@ mv "$DIR/../repacked.$$.apk" "$OUT"
 
 # Align
 rm -f "$OUT_ALIGNED"
-"$BUILD_TOOLS"/zipalign -p -v 4 "$OUT" "$OUT_ALIGNED"
+zipalign -p -v 4 "$OUT" "$OUT_ALIGNED"
 
 # Verify
-"$BUILD_TOOLS"/zipalign -vc 4 "$OUT_ALIGNED"
+zipalign -vc 4 "$OUT_ALIGNED"
 
 # Sign
-"$BUILD_TOOLS"/apksigner sign -verbose -ks ~/Developer/cheyao-android-key.keystore --out "$OUT_SIGNED" "$OUT_ALIGNED"
+apksigner sign -verbose -ks "$KEYFILE" --out "$OUT_SIGNED" "$OUT_ALIGNED"
 
 # Cleanup
 rm -rf "$DIR"
+rm -rf "$OUT_ALIGNED"
+rm -rf "$OUT"
 
-echo == Done: $OUT_ALIGNED
+echo -e "\033[0;32m== Done: $OUT_SIGNED$NC"
 
