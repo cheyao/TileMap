@@ -5,6 +5,9 @@
 # Gradle files
 .gradle/
 build/
+build32/
+build64/
+output/
 
 # Local configuration file (sdk path, etc)
 local.properties
