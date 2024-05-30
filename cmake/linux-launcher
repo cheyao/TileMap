@@ -1,0 +1,7 @@
+#!/bin/bash
+MACHINE_TYPE=`uname -m`
+if [ ${MACHINE_TYPE} == 'x86_64' ]; then
+  ./TileMap64
+else
+  ./TileMap32
+fi

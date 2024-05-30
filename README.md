@@ -44,6 +44,13 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
 ```
 
+## Linux for distribution
+To distribute on linux you can use 
+```
+./cmake/distribute-linux.sh
+```
+The output will be in `output`
+
 ## For windows on linux
 ```
 mkdir build && cd build
