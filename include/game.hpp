@@ -13,7 +13,7 @@ class Game {
 
 	int init();
 	int iterate();
-	static int event(const SDL_Event& event);
+	int event(const SDL_Event& event);
 
 	void addActor(class Actor* actor);
 	void removeActor(class Actor* actor);

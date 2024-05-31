@@ -2,6 +2,7 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_events.h>
+#include <SDL3/SDL_render.h>
 #include <SDL3_image/SDL_image.h>
 #include <stddef.h>
 
@@ -65,6 +66,7 @@ int Game::init() {
 			     "Failed to create renderer: %s", SDL_GetError());
 		return 1;
 	}
+	SDL_SetRenderVSync(mRenderer, 1);
 
 	// Make sure that the widnow can be resized
 	SDL_SetRenderLogicalPresentation(mRenderer, 1024, 768,
@@ -233,7 +235,7 @@ int Game::event(const SDL_Event& event) {
 			}
 			break;
 		case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
-			if (event.window.windowID == SDL_GetWindowID(mWIndow)) {
+			if (event.window.windowID == SDL_GetWindowID(mWindow)) {
 				return 1;
 			}
 			break;
