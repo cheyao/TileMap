@@ -12,6 +12,7 @@ option(CHECKS 		"Run checks" OFF)
 option(IWYU 		"Run include what you use" OFF)
 option(CLANG_TIDY 	"Run clang tidy" OFF)
 option(CPPCHECK 	"Run cppcheck" OFF)
+option(IMGUI 		"Include GUI" OFF)
 #CMAKE_BUILD_TYPE Release Debug
 
 if(CHECKS STREQUAL ON)
@@ -38,6 +39,16 @@ include/component.hpp
 include/spriteComponent.hpp
 include/tileMapComponent.hpp
 include/animSpriteComponent.hpp
+)
+
+set(IMGUI_SRC
+# ImGUI 
+external/imgui/imgui.cpp
+external/imgui/imgui_draw.cpp
+external/imgui/imgui_tables.cpp
+external/imgui/imgui_widgets.cpp
+external/imgui/backends/imgui_impl_sdl3.cpp
+external/imgui/backends/imgui_impl_sdlrenderer3.cpp
 )
 
 set(ASSETS_EMBED_WEB
@@ -85,15 +96,16 @@ include(CheckIPOSupported)
 check_ipo_supported(RESULT LTOSupported OUTPUT error)
 
 include_directories(include)
+
 if(NOT ANDROID)
 	if(WEB)
     		find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-static)
 		find_package(SDL3_image REQUIRED CONFIG REQUIRED COMPONENTS SDL3_image-static)
 
-		add_compile_options(-sUSE_SDL=3 -sUSE_SDL_IMAGE=3)
-		add_compile_options(${ASSETS_EMBED_WEB})
-		add_link_options(-sUSE_SDL=3 -sUSE_SDL_IMAGE=3)
-		add_link_options(${ASSETS_EMBED_WEB})
+		target_compile_options(-sUSE_SDL=3 -sUSE_SDL_IMAGE=3)
+		target_compile_options(${ASSETS_EMBED_WEB})
+		target_link_options(-sUSE_SDL=3 -sUSE_SDL_IMAGE=3)
+		target_link_options(${ASSETS_EMBED_WEB})
 
 		set(CMAKE_EXECUTABLE_SUFFIX .js)
 		
@@ -141,7 +153,7 @@ elseif(MACOSX)
 	
 		file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/${BUILD_NAME}.app/Contents/Resources)
 
-		add_link_options(-headerpad_max_install_names)
+		target_link_options(-headerpad_max_install_names)
 
 		file(COPY cmake/mac-patch-dylib.sh DESTINATION ${CMAKE_BINARY_DIR}) # Helper script
 	endif()
@@ -179,6 +191,23 @@ else()
 	endif()
 endif()
 
+if(IMGUI STREQUAL ON AND CHECKS STREQUAL OFF)
+	message("Enabling IMGUI")
+
+	if(EXISTS external/imgui/backends)
+		message(FATAL_ERROR "Please run git submodule update --remote --init external/imgui")
+	endif()
+
+	target_sources(${BUILD_NAME} PRIVATE ${IMGUI_SRC})
+	include_directories(external/imgui)
+
+	if(MSVC)
+		target_compile_options(${BUILD_NAME} PRIVATE /DIMGUI)
+	else()
+		target_compile_options(${BUILD_NAME} PRIVATE -DIMGUI)
+	endif()
+endif()
+
 # IWYU
 if(IWYU STREQUAL ON)
 	message("Running IWYU")
@@ -206,8 +235,8 @@ endif()
 #Sanitize
 if(SANITIZE STREQUAL ON)
 	message("Sanitizer emabled")
-	add_compile_options(-fsanitize=address)
-	add_link_options(-fsanitize=address)
+	target_compile_options(-fsanitize=address)
+	target_link_options(-fsanitize=address)
 endif()
 
 #do LTO

@@ -28,6 +28,7 @@ class Game {
        private:
 	void input();
 	void update();
+	void gui();
 	void draw();
 
 	std::vector<class Actor*> mActors;
