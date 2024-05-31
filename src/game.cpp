@@ -48,11 +48,10 @@ int Game::init() {
 	mWindowWidth = browserWidth();
 	mWindowHeight = browserHeight();
 
+#endif
 	mWindow = SDL_CreateWindow("TileMap", mWindowWidth, mWindowHeight,
 				   SDL_WINDOW_RESIZABLE);
-#else
-	mWindow = SDL_CreateWindow("TileMap", 1024, 768, SDL_WINDOW_RESIZABLE);
-#endif
+
 	if (mWindow == nullptr) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
 			     "Failed to create window: %s\n", SDL_GetError());
