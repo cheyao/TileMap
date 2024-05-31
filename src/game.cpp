@@ -1,6 +1,7 @@
 #include "game.hpp"
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_events.h>
 #include <SDL3_image/SDL_image.h>
 #include <stddef.h>
 
@@ -228,6 +229,11 @@ int Game::event(const SDL_Event& event) {
 			break;
 		case SDL_EVENT_KEY_DOWN:
 			if (event.key.keysym.sym == SDLK_ESCAPE) {
+				return 1;
+			}
+			break;
+		case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
+			if (event.window.windowID == SDL_GetWindowID(mWIndow)) {
 				return 1;
 			}
 			break;
