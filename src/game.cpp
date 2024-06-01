@@ -181,7 +181,7 @@ void Game::input() {
 void Game::update() {
 	// Hack for web window resizing
 #ifdef __EMSCRIPTEN__
-	if (browserWidth() != mWidth || browserHeight() != mWindowHeight) {
+	if (browserWidth() != mWindowWidth || browserHeight() != mWindowHeight) {
 		mWindowWidth = browserWidth();
 		mWindowHeight = browserHeight();
 
